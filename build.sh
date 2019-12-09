@@ -52,7 +52,7 @@ function get_header_paths()
 	list_kernels=$(aws s3api list-objects --no-sign-request --bucket $s3_bucket  --output text  --query 'Contents[]|[?contains(Key, `kernel`)]' | cut -f2)
 
 	while read -r line; do
-		if echo "$line" | grep -q "images/$dev_pat/$ver_pat"; then
+		if echo "$line" | grep -q "esr-images/$dev_pat/$ver_pat"; then
 			device=$(echo "$line" | cut -f2 -d/)
 			version=$(echo "$line" | cut -f3 -d/)
 			echo "$line"
@@ -79,7 +79,7 @@ function list_versions()
 function get_and_build()
 {
 	local path="$1"
-	local pattern="^images/(.*)/(.*)/"
+	local pattern="^esr-images/(.*)/(.*)/"
 	[[ "$path" =~ $pattern ]] || fatal "Invalid path '$path'?!"
 
 	local device="${BASH_REMATCH[1]}"
