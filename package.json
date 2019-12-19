@@ -1,0 +1,23 @@
+{
+  "name": "kernel-module-build",
+  "version": "1.0.0",
+  "description": "This is an example of building an out-of-tree kernel module using module headers\r provided for balena devices.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node arduino.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patonz/kernel-module-build.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patonz/kernel-module-build/issues"
+  },
+  "homepage": "https://github.com/patonz/kernel-module-build#readme",
+  "dependencies": {
+    "johnny-five": "^1.3.1"
+  }
+}

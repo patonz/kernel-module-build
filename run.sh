@@ -6,9 +6,9 @@ echo "OS Version is $OS_VERSION"
 mod_dir="example_module_${BALENA_DEVICE_TYPE}_${OS_VERSION}*"
 for each in $mod_dir; do
 	echo Loading module from "$each"
-	insmod "$each/hello.ko"
-	lsmod | grep hello
-	rmmod hello
+	insmod "$each/ch34x.ko"
+	lsmod | grep ch34x
+	#rmmod ch34x
 done
 
 while true; do
