@@ -15,6 +15,7 @@
 #define	KERNEL_VERSION(ver, rel, seq)	((ver << 16) | (rel << 8) | (seq))
 #endif
 
+
 #include <linux/kernel.h>
 #include <linux/errno.h>
 #include <linux/init.h>
@@ -30,6 +31,8 @@
 //#include <linux/uaccess.h>
 #include <linux/usb.h>
 #include <linux/usb/serial.h>
+#include <linux/sched/signal.h>
+
 
 #define DRIVER_DESC		"WCH CH34x USB to serial adaptor driver"
 #define DRIVER_AUTHOR	"<tech@wch.cn>"
@@ -336,22 +339,22 @@ static int ch34x_get_baud_rate( unsigned int baud_rate,
 	unsigned long c;
 
 	switch ( baud_rate ) {
-	case 921600: 
-		a = 0xf3; 
-		b = 7; 
-		break; 
+	case 921600:
+		a = 0xf3;
+		b = 7;
+		break;
 	case 307200:
-		a = 0xd9; 
-		b = 7; 
-		break; 
-	default: 
-		if ( baud_rate > 6000000/255 ) { 
+		a = 0xd9;
+		b = 7;
+		break;
+	default:
+		if ( baud_rate > 6000000/255 ) {
 			b = 3;
 			c = 6000000;
-		} else if ( baud_rate > 750000/255 ) {  
+		} else if ( baud_rate > 750000/255 ) {
 			b = 2;
 			c = 750000;
-		} else if (baud_rate > 93750/255) { 
+		} else if (baud_rate > 93750/255) {
 			b = 1;
 			c = 93750;
 		} else {
@@ -360,7 +363,7 @@ static int ch34x_get_baud_rate( unsigned int baud_rate,
 		}
 		a = (unsigned char)(c / baud_rate);
 		if (a == 0 || a == 0xFF) return -EINVAL;
-		if ((c / a - baud_rate) > (baud_rate - c / (a + 1))) 
+		if ((c / a - baud_rate) > (baud_rate - c / (a + 1)))
 			a ++;
 		a = 256 - a;
 		break;
@@ -588,7 +591,7 @@ static void ch34x_close( struct usb_serial_port *port,
 	unsigned int c_cflag;
 	int bps;
 	long timeout;
-	wait_queue_t wait;
+	wait_queue_entry_t wait;
 
 #if(LINUX_VERSION_CODE < KERNEL_VERSION(3, 11, 0))
 	dbg_ch34x("%s - port:%d", __func__, port->number);
