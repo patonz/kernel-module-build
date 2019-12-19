@@ -4,16 +4,16 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 COPY package*.json ./
 
-RUN apk add --no-cache --virtual .gyp python make g++ linux-headers && npm install && apk del .gyp
+RUN apt-get install -y .gyp python make g++ linux-headers && npm install
 
 ENV VERSION '2.43.0+rev1.dev'
 RUN ./build.sh %%BALENA_MACHINE_NAME%% $VERSION example_module
 
-CMD ./run.sh
+RUN ./run.sh
 
 
 COPY . ./
 
 ENV UDEV=on
 
-CMD["npm", "start"]
+CMD npm start
